@@ -55,6 +55,9 @@ public class JwtTokenUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        // set the role of the user in the token payload
+        claims.put("role", userDetails.getAuthorities());
+
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -64,6 +67,7 @@ public class JwtTokenUtil {
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(currentTimeMillis))
                 .setExpiration(new Date(currentTimeMillis + expiration))
                 .signWith(key).compact();
+
     }
 
 

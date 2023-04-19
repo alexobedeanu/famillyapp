@@ -1,6 +1,7 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.UserDTO;
+import com.familyexpensetracker.exception.UserNotFoundException;
 import com.familyexpensetracker.model.User;
 import com.familyexpensetracker.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDTO) {
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Encode the password
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         UserDTO savedUserDTO = new UserDTO();
         BeanUtils.copyProperties(savedUser, savedUserDTO);
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(savedUser, savedUserDTO);
             return savedUserDTO;
         } else {
-            return null;
+            throw new UserNotFoundException("User not found with id: " + id);
         }
     }
 
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(user.get(), userDTO);
             return userDTO;
         } else {
-            return null;
+            throw new UserNotFoundException("User not found with id: " + id);
         }
     }
 
@@ -76,6 +77,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException("User not found with id: " + id);
+        }
         userRepository.deleteById(id);
     }
 

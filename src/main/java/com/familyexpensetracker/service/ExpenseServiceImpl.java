@@ -1,6 +1,10 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.ExpenseDTO;
+import com.familyexpensetracker.exception.CategoryNotFoundException;
+import com.familyexpensetracker.exception.ExpenseNotFoundException;
+import com.familyexpensetracker.exception.FamilyNotFoundException;
+import com.familyexpensetracker.exception.UserNotFoundException;
 import com.familyexpensetracker.model.Category;
 import com.familyexpensetracker.model.Expense;
 import com.familyexpensetracker.model.Family;
@@ -13,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.tree.ExpandVetoException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,9 +84,16 @@ public class ExpenseServiceImpl implements ExpenseService {
                 updatedExpense.setFamily(family.get());
                 updatedExpense.setDate(expenseDTO.getDate());
             } else {
-                throw new RuntimeException("User, category or family not found");
+                if (!category.isPresent()) {
+                    throw new CategoryNotFoundException("Category not found");
+                }
+                if (!user.isPresent()) {
+                    throw new UserNotFoundException("User with id " + expenseDTO.getUserId() + " not found");
+                }
+                if (!family.isPresent()) {
+                    throw new FamilyNotFoundException("Family with id " + expenseDTO.getFamilyId() + " not found");
+                }
             }
-
             Expense savedExpense = expenseRepository.save(updatedExpense);
             ExpenseDTO savedExpenseDTO = new ExpenseDTO();
             BeanUtils.copyProperties(savedExpense, savedExpenseDTO);
@@ -91,7 +103,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
             return savedExpenseDTO;
         } else {
-            return null;
+            throw new ExpenseNotFoundException("Expense with id " + id + " not found");
         }
     }
 
@@ -107,7 +119,7 @@ public class ExpenseServiceImpl implements ExpenseService {
             expenseDTO.setDate(expense.get().getDate());
             return expenseDTO;
         } else {
-            return null;
+            throw new ExpenseNotFoundException("Expense with id " + id + " not found");
         }
     }
 
@@ -130,6 +142,10 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void deleteExpense(Long id) {
+        Optional<Expense> expense = expenseRepository.findById(id);
+        if (!expense.isPresent()) {
+            throw new ExpenseNotFoundException("Expense with id " + id + " not found");
+        }
         expenseRepository.deleteById(id);
     }
 }

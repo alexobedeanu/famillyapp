@@ -1,6 +1,7 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.FamilyDTO;
+import com.familyexpensetracker.exception.FamilyNotFoundException;
 import com.familyexpensetracker.model.Family;
 import com.familyexpensetracker.repository.FamilyRepository;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +40,7 @@ public class FamilyServiceImpl implements FamilyService {
             BeanUtils.copyProperties(savedFamily, savedFamilyDTO);
             return savedFamilyDTO;
         } else {
-            return null;
+            throw new FamilyNotFoundException("Family with id " + id + " not found");
         }
     }
 
@@ -51,7 +52,7 @@ public class FamilyServiceImpl implements FamilyService {
             BeanUtils.copyProperties(family.get(), familyDTO);
             return familyDTO;
         } else {
-            return null;
+            throw new FamilyNotFoundException("Family with id " + id + " not found");
         }
     }
 
@@ -69,6 +70,9 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public void deleteFamily(Long id) {
+        if (!familyRepository.existsById(id)) {
+            throw new FamilyNotFoundException("Family with id " + id + " not found");
+        }
         familyRepository.deleteById(id);
     }
 }

@@ -1,6 +1,9 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.IncomeDTO;
+import com.familyexpensetracker.exception.CategoryNotFoundException;
+import com.familyexpensetracker.exception.IncomeNotFoundException;
+import com.familyexpensetracker.exception.UserNotFoundException;
 import com.familyexpensetracker.model.Category;
 import com.familyexpensetracker.model.Income;
 import com.familyexpensetracker.model.User;
@@ -42,7 +45,11 @@ public class IncomeService {
             income.setCategory(category.get());
             income.setDate(LocalDateTime.now());
         } else {
-            throw new RuntimeException("User or category not found");
+            if (!user.isPresent()) {
+                throw new UserNotFoundException("User with id " + incomeDTO.getUserId() + " not found");
+            } else {
+                throw new CategoryNotFoundException("Category with id " + incomeDTO.getCategoryId() + " not found");
+            }
         }
 
         Income savedIncome = incomeRepository.save(income);
@@ -59,7 +66,7 @@ public class IncomeService {
         Optional<Income> incomeOptional = incomeRepository.findById(id);
 
         if (!incomeOptional.isPresent()) {
-            throw new RuntimeException("Income not found");
+            throw new IncomeNotFoundException("Income with id " + id + " not found");
         }
 
         Income income = incomeOptional.get();
@@ -73,7 +80,7 @@ public class IncomeService {
         Optional<Income> incomeOptional = incomeRepository.findById(id);
 
         if (!incomeOptional.isPresent()) {
-            throw new RuntimeException("Income not found");
+            throw new IncomeNotFoundException("Income with id " + id + " not found");
         }
 
         return new IncomeDTO(incomeOptional.get());
@@ -88,7 +95,7 @@ public class IncomeService {
         Optional<Income> incomeOptional = incomeRepository.findById(id);
 
         if (!incomeOptional.isPresent()) {
-            throw new RuntimeException("Income not found");
+            throw new IncomeNotFoundException("Income with id " + id + " not found");
         }
 
         incomeRepository.deleteById(id);

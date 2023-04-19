@@ -1,6 +1,9 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.BudgetDTO;
+import com.familyexpensetracker.exception.BudgetNotFoundException;
+import com.familyexpensetracker.exception.CategoryNotFoundException;
+import com.familyexpensetracker.exception.FamilyNotFoundException;
 import com.familyexpensetracker.model.Budget;
 import com.familyexpensetracker.model.Category;
 import com.familyexpensetracker.model.Family;
@@ -39,9 +42,13 @@ public class BudgetServiceImpl implements BudgetService {
             budget.setCategory(category.get());
             budget.setFamily(family.get());
         } else {
-            throw new RuntimeException("Category or family not found");
+            if (!category.isPresent()) {
+                throw new CategoryNotFoundException("Category not found with id: " + budgetDTO.getCategoryId());
+            }
+            if (!family.isPresent()) {
+                throw new FamilyNotFoundException("Family not found with id: " + budgetDTO.getFamilyId());
+            }
         }
-
         Budget savedBudget = budgetRepository.save(budget);
         BudgetDTO savedBudgetDTO = new BudgetDTO();
         BeanUtils.copyProperties(savedBudget, savedBudgetDTO);
@@ -65,7 +72,12 @@ public class BudgetServiceImpl implements BudgetService {
                 updatedBudget.setCategory(category.get());
                 updatedBudget.setFamily(family.get());
             } else {
-                throw new RuntimeException("Category or family not found");
+                if (!category.isPresent()) {
+                    throw new CategoryNotFoundException("Category not found with id: " + budgetDTO.getCategoryId());
+                }
+                if (!family.isPresent()) {
+                    throw new FamilyNotFoundException("Family not found with id: " + budgetDTO.getFamilyId());
+                }
             }
 
             Budget savedBudget = budgetRepository.save(updatedBudget);
@@ -76,7 +88,7 @@ public class BudgetServiceImpl implements BudgetService {
 
             return savedBudgetDTO;
         } else {
-            return null;
+            throw new BudgetNotFoundException("Budget not found with id: " + id);
         }
     }
 
@@ -90,7 +102,7 @@ public class BudgetServiceImpl implements BudgetService {
             budgetDTO.setCategoryId(budget.get().getCategory().getId());
             return budgetDTO;
         } else {
-            return null;
+            throw new BudgetNotFoundException("Budget not found with id: " + id);
         }
     }
 
@@ -110,6 +122,9 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public void deleteBudget(Long id) {
+        if (!budgetRepository.existsById(id)) {
+            throw new BudgetNotFoundException("Budget not found with id: " + id);
+        }
         budgetRepository.deleteById(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.CategoryDTO;
+import com.familyexpensetracker.exception.CategoryNotFoundException;
 import com.familyexpensetracker.model.Category;
 import com.familyexpensetracker.repository.CategoryRepository;
 import org.springframework.beans.BeanUtils;
@@ -39,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
             BeanUtils.copyProperties(savedCategory, savedCategoryDTO);
             return savedCategoryDTO;
         } else {
-            return null;
+            throw new CategoryNotFoundException("Category with id " + id + " not found");
         }
     }
 
@@ -51,7 +52,7 @@ public class CategoryServiceImpl implements CategoryService {
             BeanUtils.copyProperties(category.get(), categoryDTO);
             return categoryDTO;
         } else {
-            return null;
+            throw new CategoryNotFoundException("Category with id " + id + " not found");
         }
     }
 
@@ -69,6 +70,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new CategoryNotFoundException("Category with id " + id + " not found");
+        }
         categoryRepository.deleteById(id);
     }
 }
