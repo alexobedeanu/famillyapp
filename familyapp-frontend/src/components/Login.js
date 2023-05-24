@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Login.css';
 
 const Login = () => {
@@ -19,11 +21,17 @@ const Login = () => {
             });
 
             if (response.data) {
-                login(response.data);
-                navigate('/postlogin');
+                const token = response.data;
+                login(token); // Stocați token-ul în contextul de autentificare
+                navigate('/home'); // Navigați către pagina principală
             }
         } catch (error) {
             console.error('Failed to login:', error);
+            if (error.response && error.response.data && error.response.data.message === 'Bad credentials') {
+                toast.error('Bad credentials, please try again');
+            } else {
+                toast.error('An unexpected error occurred');
+            }
         }
     };
 
@@ -33,19 +41,11 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <label>
                     Username/Email:
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </label>
                 <label>
                     Password:
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </label>
                 <input type="submit" value="Login" />
             </form>

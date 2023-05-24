@@ -1,8 +1,11 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.UserDTO;
+import com.familyexpensetracker.exception.FamilyNotFoundException;
 import com.familyexpensetracker.exception.UserNotFoundException;
+import com.familyexpensetracker.model.Family;
 import com.familyexpensetracker.model.User;
+import com.familyexpensetracker.repository.FamilyRepository;
 import com.familyexpensetracker.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +16,16 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private FamilyRepository familyRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -61,11 +67,14 @@ public class UserServiceImpl implements UserService {
         if (user.isPresent()) {
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(user.get(), userDTO);
+            Set<Long> familyIds = user.get().getFamilies().stream().map(Family::getId).collect(Collectors.toSet());
+            userDTO.setFamilyIds(familyIds);
             return userDTO;
         } else {
             throw new UserNotFoundException("User not found with id: " + id);
         }
     }
+
 
     @Override
     public List<UserDTO> getAllUsers() {
@@ -86,7 +95,31 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.deleteById(id);
     }
+    @Override
+    public UserDTO addFamilyToUser(Long userId, Long familyId) {
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (!existingUser.isPresent()) {
+            throw new UserNotFoundException("User not found with id: " + userId);
+        }
 
+        Optional<Family> existingFamily = familyRepository.findById(familyId);
+        if (!existingFamily.isPresent()) {
+            throw new FamilyNotFoundException("Family with id " + familyId + " not found");
+        }
+
+        User user = existingUser.get();
+        Family family = existingFamily.get();
+
+        user.getFamilies().add(family);
+        family.getUsers().add(user);
+
+        userRepository.save(user);
+        familyRepository.save(family);
+
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user, userDTO);
+        return userDTO;
+    }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

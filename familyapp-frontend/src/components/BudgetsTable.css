@@ -1,0 +1,59 @@
+.budgets-table {
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.budgets-table .search-input {
+    margin-right: 1rem;
+}
+
+.budgets-table form {
+    margin-bottom: 1rem;
+}
+
+.budgets-table form .MuiTextField-root {
+    margin-right: 1rem;
+}
+
+.budgets-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.budgets-table table td,
+.budgets-table table th {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+}
+
+.budgets-table .pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.budgets-table .pagination button {
+    margin: 0 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background-color: #f1f1f1;
+    border: none;
+    cursor: pointer;
+}
+
+.budgets-table .pagination button.active {
+    background-color: #ccc;
+}
+
+.budgets-table .search-result {
+    margin-bottom: 1rem;
+}
+
+.budgets-table .search-result span {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.budgets-table form .MuiButton-root {
+    margin-top: 1rem;
+}

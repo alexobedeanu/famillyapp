@@ -3,6 +3,7 @@ package com.familyexpensetracker.controller;
 import com.familyexpensetracker.dto.UserDTO;
 import com.familyexpensetracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,5 +41,10 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
+    }
+    @PostMapping("/{userId}/families/{familyId}")
+    public ResponseEntity<UserDTO> addFamilyToUser(@PathVariable Long userId, @PathVariable Long familyId) {
+        UserDTO updatedUser = userService.addFamilyToUser(userId, familyId);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 }

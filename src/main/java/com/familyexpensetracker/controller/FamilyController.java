@@ -1,7 +1,9 @@
 package com.familyexpensetracker.controller;
 
 import com.familyexpensetracker.dto.FamilyDTO;
+import com.familyexpensetracker.dto.UserDTO;
 import com.familyexpensetracker.service.FamilyService;
+import com.familyexpensetracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,9 @@ public class FamilyController {
 
     @Autowired
     private FamilyService familyService;
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<FamilyDTO> createFamily(@RequestBody FamilyDTO familyDTO) {
@@ -40,4 +45,6 @@ public class FamilyController {
         familyService.deleteFamily(id);
         return ResponseEntity.ok().build();
     }
+
+
 }

@@ -46,4 +46,9 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseDto);
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> getTotalExpenses() {
+        Long totalExpenses = expenseService.getTotalExpenses();
+        return ResponseEntity.ok(totalExpenses);
+    }
 }

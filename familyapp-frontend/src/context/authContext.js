@@ -4,22 +4,29 @@ import jwtDecode from 'jwt-decode';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+    const initialToken = localStorage.getItem('token');
     const [authState, setAuthState] = useState({
         user: null,
-        token: null,
+        token: initialToken,
     });
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const decodedToken = jwtDecode(token);
-            setAuthState({ user: decodedToken.sub, token });
+        if (initialToken) {
+            const decodedToken = jwtDecode(initialToken);
+            setAuthState((prevState) => ({
+                ...prevState,
+                user: decodedToken.sub,
+            }));
         }
     }, []);
 
     const login = (token) => {
         const decodedToken = jwtDecode(token);
-        setAuthState({ user: decodedToken.sub, token });
+        setAuthState((prevState) => ({
+            ...prevState,
+            user: decodedToken.sub,
+            token: token,
+        }));
         localStorage.setItem('token', token);
     };
 

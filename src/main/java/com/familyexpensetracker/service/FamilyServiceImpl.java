@@ -1,9 +1,13 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.FamilyDTO;
+import com.familyexpensetracker.dto.UserDTO;
 import com.familyexpensetracker.exception.FamilyNotFoundException;
+import com.familyexpensetracker.exception.UserNotFoundException;
 import com.familyexpensetracker.model.Family;
+import com.familyexpensetracker.model.User;
 import com.familyexpensetracker.repository.FamilyRepository;
+import com.familyexpensetracker.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,8 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Autowired
     private FamilyRepository familyRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public FamilyDTO createFamily(FamilyDTO familyDTO) {
@@ -75,4 +81,6 @@ public class FamilyServiceImpl implements FamilyService {
         }
         familyRepository.deleteById(id);
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.familyexpensetracker.service;
 
 import com.familyexpensetracker.dto.FamilyDTO;
+import com.familyexpensetracker.dto.UserDTO;
 
 import java.util.List;
 

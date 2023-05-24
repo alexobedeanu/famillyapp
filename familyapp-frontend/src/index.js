@@ -1,17 +1,20 @@
+// index.js
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { AuthProvider } from './context/authContext'; // importa AuthProvider
+import { AuthProvider } from './context/authContext';
+import 'react-toastify/dist/ReactToastify.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.render(
     <React.StrictMode>
-        <AuthProvider> {/* wrap App in AuthProvider */}
+        <AuthProvider>
             <App />
         </AuthProvider>
-    </React.StrictMode>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 reportWebVitals();

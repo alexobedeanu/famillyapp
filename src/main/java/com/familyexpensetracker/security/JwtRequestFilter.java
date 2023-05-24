@@ -27,6 +27,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
+        logger.info(request.getRequestURI());
+        logger.info(request.getMethod());
+        logger.info(request.getHeaderNames().toString());
+
+        if (request.getMethod().equals("OPTIONS")) {
+            // Permit cererile de tip OPTIONS să treacă fără verificarea token-ului
+            logger.info(request.getMethod() + " - OPTIONS");
+            logger.info(response.getHeaderNames());
+            chain.doFilter(request, response);
+            return;
+        }
+
         final String requestTokenHeader = request.getHeader("Authorization");
 
         String username = null;

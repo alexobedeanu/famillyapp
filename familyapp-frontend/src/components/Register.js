@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Register.css';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+
 
 function Register() {
     const [formData, setFormData] = useState({
@@ -10,6 +13,8 @@ function Register() {
         role: '',
         password: '',
     });
+    const [error, setError] = useState(null); // New state for handling error
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -18,9 +23,18 @@ function Register() {
             .post('http://localhost:8080/api/users', formData)
             .then((response) => {
                 console.log(response.data);
+                toast.success('Registration successful!')
+                navigate('/login'); // Navigate to login page on successful registration
             })
             .catch((error) => {
                 console.error('There was an error!', error);
+                if (error.response.data.message.includes('users_username_key')) {
+                    setError('This username is already in use. Please use a different username.');
+                } else if (error.response.data.message.includes('users_email_key')) {
+                    setError('This email is already in use. Please use a different email.');
+                } else {
+                    setError(error.response.data.message);
+                }
             });
     };
 
@@ -30,7 +44,7 @@ function Register() {
 
     return (
         <div className="register-container">
-        <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
             <label>
                 ID:
                 <input type="text" name="id" onChange={handleChange} />
@@ -51,6 +65,7 @@ function Register() {
                 Password:
                 <input type="password" name="password" onChange={handleChange} />
             </label>
+            {error && <p>{error}</p>}
             <input type="submit" value="Register" />
         </form>
         </div>

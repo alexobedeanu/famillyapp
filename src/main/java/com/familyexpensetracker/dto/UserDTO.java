@@ -3,6 +3,8 @@ package com.familyexpensetracker.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Set;
+
 public class UserDTO {
     private Long id;
     @JsonProperty("username")
@@ -12,6 +14,16 @@ public class UserDTO {
     private String role;
     @JsonProperty("password")
     private String password;
+
+    public Set<Long> getFamilyIds() {
+        return familyIds;
+    }
+
+    public void setFamilyIds(Set<Long> familyIds) {
+        this.familyIds = familyIds;
+    }
+
+    private Set<Long> familyIds;
 
 
 

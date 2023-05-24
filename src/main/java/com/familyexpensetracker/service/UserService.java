@@ -15,4 +15,6 @@ public interface UserService {
     List<UserDTO> getAllUsers();
 
     void deleteUser(Long id);
+    UserDTO addFamilyToUser(Long userId, Long familyId);
+
 }

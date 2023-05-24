@@ -148,4 +148,9 @@ public class ExpenseServiceImpl implements ExpenseService {
         }
         expenseRepository.deleteById(id);
     }
+
+    @Override
+    public Long getTotalExpenses() {
+        return expenseRepository.count();
+    }
 }

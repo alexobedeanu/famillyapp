@@ -29,6 +29,12 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
 
+        if (request.getMethod().equals("OPTIONS")) {
+            // Permit cererile de tip OPTIONS să treacă fără verificarea token-ului
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String username = null;
         String jwtToken = null;
 
