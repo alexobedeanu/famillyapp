@@ -20,6 +20,7 @@ public class FamilyController {
     @Autowired
     private UserService userService;
 
+
     @PostMapping
     public ResponseEntity<FamilyDTO> createFamily(@RequestBody FamilyDTO familyDTO) {
         return ResponseEntity.ok(familyService.createFamily(familyDTO));
@@ -45,6 +46,10 @@ public class FamilyController {
         familyService.deleteFamily(id);
         return ResponseEntity.ok().build();
     }
-
+    @PostMapping("/{familyId}/forecast")
+    public ResponseEntity<Double> forecastExpenses(@PathVariable Long familyId, @RequestBody String targetDate) {
+        double predictedExpenses = familyService.forecastFamilyExpenses(familyId, targetDate);
+        return ResponseEntity.ok(predictedExpenses);
+    }
 
 }

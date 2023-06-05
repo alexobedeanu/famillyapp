@@ -25,7 +25,7 @@ public class JwtTokenProvider {
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         // get user role from database and add it to the token payload
-        String role = userRepository.findByUsername(username).get().getRole();
+        String role = String.valueOf(userRepository.findByUsername(username).get().getRole());
 
         // set claims for the token
         Claims claims = Jwts.claims().setSubject(username);

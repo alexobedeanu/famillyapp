@@ -4,7 +4,6 @@ import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-
 function Register() {
     const [formData, setFormData] = useState({
         id: '',
@@ -12,12 +11,18 @@ function Register() {
         username: '',
         role: '',
         password: '',
+        confirmPassword: '',
     });
     const [error, setError] = useState(null); // New state for handling error
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        if (formData.password !== formData.confirmPassword) {
+            setError('Password and confirm password must match.');
+            return;
+        }
 
         axios
             .post('http://localhost:8080/api/users', formData)
@@ -45,29 +50,29 @@ function Register() {
     return (
         <div className="register-container">
             <form onSubmit={handleSubmit}>
-            <label>
-                ID:
-                <input type="text" name="id" onChange={handleChange} />
-            </label>
-            <label>
-                Email:
-                <input type="email" name="email" onChange={handleChange} />
-            </label>
-            <label>
-                Username:
-                <input type="text" name="username" onChange={handleChange} />
-            </label>
-            <label>
-                Role:
-                <input type="text" name="role" onChange={handleChange} />
-            </label>
-            <label>
-                Password:
-                <input type="password" name="password" onChange={handleChange} />
-            </label>
-            {error && <p>{error}</p>}
-            <input type="submit" value="Register" />
-        </form>
+                <label>
+                    Email:
+                    <input type="email" name="email" onChange={handleChange} />
+                </label>
+                <label>
+                    Username:
+                    <input type="text" name="username" onChange={handleChange} />
+                </label>
+                <label>
+                    Role:
+                    <input type="text" name="role" onChange={handleChange} />
+                </label>
+                <label>
+                    Password:
+                    <input type="password" name="password" onChange={handleChange} />
+                </label>
+                <label>
+                    Confirm Password:
+                    <input type="password" name="confirmPassword" onChange={handleChange} />
+                </label>
+                {error && <p>{error}</p>}
+                <input type="submit" value="Register" />
+            </form>
         </div>
     );
 }

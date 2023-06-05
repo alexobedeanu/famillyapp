@@ -7,7 +7,6 @@ function PostLogin() {
     return (
         <div>
             <h1>Bine ați venit, {user}!</h1>
-            <p>Aici vor fi funcționalitățile aplicației...</p>
         </div>
     );
 }

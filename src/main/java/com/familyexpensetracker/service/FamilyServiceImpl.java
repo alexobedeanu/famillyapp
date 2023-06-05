@@ -24,6 +24,12 @@ public class FamilyServiceImpl implements FamilyService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ForecastService forecastService;
+
+    public double forecastFamilyExpenses(Long familyId, String targetDate) {
+        return forecastService.forecastExpenses(familyId, targetDate);
+    }
     @Override
     public FamilyDTO createFamily(FamilyDTO familyDTO) {
         Family family = new Family();

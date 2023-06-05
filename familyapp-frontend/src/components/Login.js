@@ -22,8 +22,8 @@ const Login = () => {
 
             if (response.data) {
                 const token = response.data;
-                login(token); // Stocați token-ul în contextul de autentificare
-                navigate('/home'); // Navigați către pagina principală
+                login(token);
+                navigate('/home');
             }
         } catch (error) {
             console.error('Failed to login:', error);
@@ -40,7 +40,7 @@ const Login = () => {
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <label>
-                    Username/Email:
+                    Username:
                     <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </label>
                 <label>
