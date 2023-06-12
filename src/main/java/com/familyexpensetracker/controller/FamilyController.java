@@ -47,8 +47,8 @@ public class FamilyController {
         return ResponseEntity.ok().build();
     }
     @PostMapping("/{familyId}/forecast")
-    public ResponseEntity<Double> forecastExpenses(@PathVariable Long familyId, @RequestBody String targetDate) {
-        double predictedExpenses = familyService.forecastFamilyExpenses(familyId, targetDate);
+    public ResponseEntity<String> forecastExpenses(@PathVariable Long familyId, @RequestBody String targetDate) {
+        String predictedExpenses = familyService.forecastFamilyExpenses(familyId, targetDate);
         return ResponseEntity.ok(predictedExpenses);
     }
 

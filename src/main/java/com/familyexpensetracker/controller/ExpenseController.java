@@ -57,7 +57,7 @@ public class ExpenseController {
     }
 
     @PostMapping("/forecastExpenses")
-    public double forecastExpenses(@RequestBody Map<String, String> request) {
+    public String forecastExpenses(@RequestBody Map<String, String> request) {
         Long familyId = Long.parseLong(request.get("familyId"));
         String targetDate = request.get("targetDate");
         return forecastService.forecastExpenses(familyId, targetDate);

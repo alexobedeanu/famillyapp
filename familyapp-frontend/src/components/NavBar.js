@@ -9,16 +9,23 @@ function NavBar() {
     const [sidebar, setSidebar] = useState(false);
     const { authState: { user }, logout } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { setSidebarExpanded } = useContext(SidebarContext);
 
-    const showSidebar = () => setSidebar(prevState => !prevState);
+    const showSidebar = () => {
+        setSidebar(prevState => !prevState);
+        if (setSidebarExpanded) {
+            setSidebarExpanded(false);
+        }
+    };
 
     const handleLogout = () => {
         logout();
         navigate("/login");
-    }
+    };
 
     return (
         <>
+            <div className={sidebar ? 'sidebar-overlay active' : 'sidebar-overlay'} onClick={showSidebar}></div>
             <div className='navbar'>
                 <Link to='#' className='menu-bars'>
                     <FaBars onClick={showSidebar} />
@@ -51,6 +58,9 @@ function NavBar() {
                         </Link>
                         <Link to="/budgets" onClick={showSidebar}>
                             <button className="nav-button">Budgets</button>
+                        </Link>
+                        <Link to="/forecast" onClick={showSidebar}>
+                            <button className="nav-button">Forecast</button>
                         </Link>
                     </li>}
                     {user && <li><button className="nav-button logout-button" onClick={handleLogout}>Logout</button></li>}

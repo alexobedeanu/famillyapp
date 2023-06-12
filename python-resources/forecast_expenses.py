@@ -35,7 +35,10 @@ def forecast_expenses():
     # Process and forecast
     forecasted_expense = process_and_forecast(df, target_date)
 
-    return jsonify({'predictedExpenses': forecasted_expense})
+    # Convert the forecasted values to JSON and decode it into a dictionary
+    forecasted_expense_json = json.loads(forecasted_expense.to_json(orient='records', date_format='iso'))
+
+    return jsonify(forecasted_expense_json)
 
 def process_and_forecast(df, target_date):
     # Convert the dates to pandas datetime format
@@ -55,8 +58,15 @@ def process_and_forecast(df, target_date):
     # Make the forecast
     forecast = model_fit.predict(start=daily_expenses.index[-1] + pd.Timedelta(days=1), end=target_date, typ='levels')
 
-    # Return the forecast for the target date
-    return forecast[-1]
+    # Convert the forecast Series to DataFrame and reset the index
+    forecast_df = forecast.to_frame().reset_index()
+
+    # Rename the columns
+    forecast_df.columns = ['date', 'predicted_expense']
+
+    # Return the entire forecast
+    print(forecast_df)
+    return forecast_df
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')

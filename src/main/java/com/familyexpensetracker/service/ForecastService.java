@@ -11,13 +11,14 @@ import org.json.JSONObject;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 @Service
 public class ForecastService {
     @Value("${forecast.service.url}")
     private String forecastServiceUrl;
 
-    public double forecastExpenses(Long familyId, String targetDate) {
+    public String forecastExpenses(Long familyId, String targetDate) {
         RestTemplate restTemplate = new RestTemplate();
 
         // Set the headers
@@ -35,8 +36,9 @@ public class ForecastService {
         // Make the request and get the response
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(forecastServiceUrl + "/forecast", request, String.class);
 
-        // Extract the predicted expenses from the JSON response
-        JSONObject jsonResponse = new JSONObject(responseEntity.getBody());
-        return jsonResponse.getDouble("predictedExpenses");
+        // Log the JSON response
+        Logger.getLogger("ForecastService").info("JSON response: " + responseEntity.getBody());
+
+        return responseEntity.getBody();
     }
 }

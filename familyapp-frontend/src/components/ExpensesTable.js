@@ -5,7 +5,7 @@ import { AuthContext } from '../context/authContext';
 import './ExpensesTable.css';
 
 const ExpensesTable = () => {
-    const pageSize = 2; // Setați numărul de elemente pe pagină aici
+    const pageSize = 5; // Setați numărul de elemente pe pagină aici
     const [expenses, setExpenses] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);

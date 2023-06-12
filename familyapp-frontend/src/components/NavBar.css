@@ -4,6 +4,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    position: relative;
 }
 
 .menu-bars {
@@ -12,6 +13,21 @@
     background: none;
     cursor: pointer;
     color: #fff;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.sidebar-overlay.active {
+    display: block;
 }
 
 .nav-menu {
@@ -25,6 +41,7 @@
     top: 0;
     left: -100%;
     transition: 850ms;
+    z-index: 101;
 }
 
 .nav-menu.active {
@@ -68,8 +85,6 @@
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-
-
 .user-info {
     color: #fff;
     font-size: 1.2rem;
@@ -80,6 +95,10 @@
 
 .navbar-toggle:focus {
     outline: none;
+}
+
+.logout-button {
+    color: #ff1744;
 }
 
 @media screen and (max-width: 960px) {
@@ -123,3 +142,4 @@
 .logout-button {
     color: #ff1744;
 }
+

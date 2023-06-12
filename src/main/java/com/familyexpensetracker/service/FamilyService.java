@@ -14,6 +14,6 @@ public interface FamilyService {
 
     List<FamilyDTO> getAllFamilies();
 
-    double forecastFamilyExpenses(Long familyId, String targetDate);
+    String forecastFamilyExpenses(Long familyId, String targetDate);
     void deleteFamily(Long id);
 }

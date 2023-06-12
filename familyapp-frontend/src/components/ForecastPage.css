@@ -1,0 +1,39 @@
+.ForecastPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.ForecastPage .MuiButton-root {
+    margin-top: 20px;
+    background-color: #3f51b5;
+    color: white;
+}
+
+.ForecastPage .MuiButton-root:hover {
+    background-color: #303f9f;
+}
+
+.ForecastPage .MuiTypography-h6 {
+    margin-top: 20px;
+    color: #3f51b5;
+}
+
+.ForecastPage .MuiTextField-root {
+    margin-top: 20px;
+}
+
+.ForecastPage .MuiSelect-root {
+    margin-top: 20px;
+}
+
+.ForecastPage .recharts-responsive-container {
+    margin-top: 20px;
+}

@@ -27,7 +27,7 @@ public class FamilyServiceImpl implements FamilyService {
     @Autowired
     private ForecastService forecastService;
 
-    public double forecastFamilyExpenses(Long familyId, String targetDate) {
+    public String forecastFamilyExpenses(Long familyId, String targetDate) {
         return forecastService.forecastExpenses(familyId, targetDate);
     }
     @Override

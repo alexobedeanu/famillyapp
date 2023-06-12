@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import ExpensesTable from "./components/ExpensesTable";
 import ExpensesPage from "./components/ExpensesPage";
 import BudgetsTable from "./components/BudgetsTable";
+import ForecastPage from "./components/ForecastPage";
 
 function App() {
     const [sidebar, setSidebar] = useState(false);
@@ -32,7 +33,7 @@ function App() {
                             <Route path="/home" element={<PostLogin />} />
                             <Route path="/expenses" element={<ExpensesPage />} />
                             <Route path="/budgets" element={<BudgetsTable />} />
-
+                            <Route path="/forecast" element={<ForecastPage />} />
                         </Routes>
                     </div>
                 </Router>
