@@ -15,6 +15,8 @@ public class User {
     private String password;
     private String email;
     private String role;
+    @Transient
+    private Set<Long> familyIds;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_family",
@@ -23,6 +25,13 @@ public class User {
     private Set<Family> families = new HashSet<>();
 
     // Getters and Setters
+
+    public Set<Long> getFamilyIds() {
+        return familyIds;
+    }
+    public void setFamilyIds(Set<Long> familyIds) {
+        this.familyIds = familyIds;
+    }
 
     public Long getId() {
         return id;

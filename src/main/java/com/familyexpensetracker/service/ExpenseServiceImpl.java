@@ -148,7 +148,21 @@ public class ExpenseServiceImpl implements ExpenseService {
         }
         expenseRepository.deleteById(id);
     }
-
+    @Override
+    public List<ExpenseDTO> getExpensesByFamilyId(Long familyId) {
+        List<Expense> expenses = expenseRepository.findByFamilyId(familyId);
+        List<ExpenseDTO> expenseDTOs = new ArrayList<>();
+        for (Expense expense : expenses) {
+            ExpenseDTO expenseDTO = new ExpenseDTO();
+            BeanUtils.copyProperties(expense, expenseDTO);
+            expenseDTO.setFamilyId(expense.getFamily().getId());
+            expenseDTO.setUserId(expense.getUser().getId());
+            expenseDTO.setCategoryId(expense.getCategory().getId());
+            expenseDTO.setDate(expense.getDate());
+            expenseDTOs.add(expenseDTO);
+        }
+        return expenseDTOs;
+    }
     @Override
     public Long getTotalExpenses() {
         return expenseRepository.count();

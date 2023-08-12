@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class FamilyServiceImpl implements FamilyService {
@@ -86,6 +87,22 @@ public class FamilyServiceImpl implements FamilyService {
             throw new FamilyNotFoundException("Family with id " + id + " not found");
         }
         familyRepository.deleteById(id);
+    }
+
+    @Override
+    public List<UserDTO> getUsersByFamily(Long familyId) {
+        Family family = familyRepository.findById(familyId)
+                .orElseThrow(() -> new FamilyNotFoundException("Family with id " + familyId + " not found"));
+
+        Set<User> users = family.getUsers();
+        List<UserDTO> userDTOs = new ArrayList<>();
+
+        for (User user : users) {
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user, userDTO);
+            userDTOs.add(userDTO);
+        }
+        return userDTOs;
     }
 
 

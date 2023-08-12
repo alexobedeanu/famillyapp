@@ -6,7 +6,7 @@ base_url = "http://localhost:8080/api/v1/expenses"
 
 # Tokenul JWT și cookie-ul JSESSIONID
 headers = {
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJBRE1JTiJ9XSwic3ViIjoiYWxleCIsImlhdCI6MTY4NjU3NjQwNCwiZXhwIjoxNjg2NTgwMDA0fQ.lX787sZGXbR1TOR9WTJ_xjIK2zKG6GFwQXHKEThmRZM",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJBRE1JTiJ9XSwic3ViIjoiYWxleCIsImlhdCI6MTY4NjY2Mzc3MCwiZXhwIjoxNjg2NjY3MzcwfQ.jCSVeASu3E-xqsGKxCBXxWgk2Dwsfv6OB2QUOL2iEgo",
     "Content-Type": "application/json",
     "Cookie": "JSESSIONID=317AEB5C5586F5281CF28DA33151A5EC"
 }
@@ -15,12 +15,12 @@ headers = {
 data = {
     "userId": 1,
     "category_id": 1,
-    "familyId": 1
+    "familyId": 2
 }
 
 # Generarea cheltuielilor pentru fiecare zi a lunii martie
 start_date = datetime.date(2023, 1, 1)
-end_date = datetime.date(2022, 3, 31)
+end_date = datetime.date(2023, 3, 31)
 delta = datetime.timedelta(days=1)
 
 current_date = start_date

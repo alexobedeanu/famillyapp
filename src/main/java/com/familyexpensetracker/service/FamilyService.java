@@ -16,4 +16,8 @@ public interface FamilyService {
 
     String forecastFamilyExpenses(Long familyId, String targetDate);
     void deleteFamily(Long id);
+    List<UserDTO> getUsersByFamily(Long familyId);
+
+
+
 }

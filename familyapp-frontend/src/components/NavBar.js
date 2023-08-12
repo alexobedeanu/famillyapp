@@ -5,11 +5,23 @@ import { AuthContext } from '../context/authContext';
 import './NavBar.css';
 import { SidebarContext } from "../context/SidebarContext";
 
+function getRoleFromToken(token) {
+    try {
+        const base64Url = token.split('.')[1];
+        const decodedValue = JSON.parse(atob(base64Url));
+        return decodedValue && decodedValue.role && decodedValue.role[0] && decodedValue.role[0].authority;
+    } catch (error) {
+        console.error("Error decoding token", error);
+        return null;
+    }
+}
+
 function NavBar() {
     const [sidebar, setSidebar] = useState(false);
-    const { authState: { user }, logout } = useContext(AuthContext);
+    const { authState: { user, token }, logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const { setSidebarExpanded } = useContext(SidebarContext);
+    const role = getRoleFromToken(token);
 
     const showSidebar = () => {
         setSidebar(prevState => !prevState);
@@ -46,25 +58,40 @@ function NavBar() {
                         <Link to="/register" onClick={showSidebar}>
                             <button className="nav-button">Register</button>
                         </Link>
-                    </li>
-                    <li>
                         <Link to="/login" onClick={showSidebar}>
                             <button className="nav-button">Login</button>
                         </Link>
                     </li>
-                    {user && <li>
-                        <Link to="/expenses" onClick={showSidebar}>
+
+                    {role === 'ADMIN' && <li>
+                        <Link to="/admin/familyuserspage" onClick={showSidebar}>
+                            <button className="nav-button">Family Users</button>
+                        </Link>
+                        <Link to="/admin/expenses" onClick={showSidebar}>
                             <button className="nav-button">Expenses</button>
                         </Link>
-                        <Link to="/budgets" onClick={showSidebar}>
+                        <Link to="/admin/budgets" onClick={showSidebar}>
                             <button className="nav-button">Budgets</button>
                         </Link>
-                        <Link to="/forecast" onClick={showSidebar}>
+                        <Link to="/admin/forecast" onClick={showSidebar}>
+                            <button className="nav-button">Forecast</button>
+                        </Link>
+                        {/* Poți adăuga și alte rute specifice pentru admini aici */}
+                    </li>}
+
+                    {role === 'USER' && <li>
+                        <Link to="/user/expenses" onClick={showSidebar}>
+                            <button className="nav-button">Expenses</button>
+                        </Link>
+                        <Link to="/user/budgets" onClick={showSidebar}>
+                            <button className="nav-button">Budgets</button>
+                        </Link>
+                        <Link to="/user/forecast" onClick={showSidebar}>
                             <button className="nav-button">Forecast</button>
                         </Link>
                     </li>}
-                    {user && <li><button className="nav-button logout-button" onClick={handleLogout}>Logout</button></li>}
 
+                    {user && <li><button className="nav-button logout-button" onClick={handleLogout}>Logout</button></li>}
                 </ul>
             </nav>
         </>

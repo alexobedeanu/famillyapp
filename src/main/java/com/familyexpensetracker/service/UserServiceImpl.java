@@ -120,6 +120,36 @@ public class UserServiceImpl implements UserService {
         BeanUtils.copyProperties(user, userDTO);
         return userDTO;
     }
+    @Override
+    public UserDTO removeFamilyFromUser(Long userId, Long familyId) {
+        Optional<User> existingUser = userRepository.findById(userId);
+        if (!existingUser.isPresent()) {
+            throw new UserNotFoundException("User not found with id: " + userId);
+        }
+
+        Optional<Family> existingFamily = familyRepository.findById(familyId);
+        if (!existingFamily.isPresent()) {
+            throw new FamilyNotFoundException("Family with id " + familyId + " not found");
+        }
+
+        User user = existingUser.get();
+        Family family = existingFamily.get();
+
+        if(!user.getFamilies().contains(family) || !family.getUsers().contains(user)) {
+            throw new IllegalArgumentException("User is not a member of the specified family.");
+        }
+
+        user.getFamilies().remove(family);
+        family.getUsers().remove(user);
+
+        userRepository.save(user);
+        familyRepository.save(family);
+
+        UserDTO userDTO = new UserDTO();
+        BeanUtils.copyProperties(user, userDTO);
+        return userDTO;
+    }
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

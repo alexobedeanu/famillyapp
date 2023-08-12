@@ -17,4 +17,7 @@ public interface UserService {
     void deleteUser(Long id);
     UserDTO addFamilyToUser(Long userId, Long familyId);
 
+    UserDTO removeFamilyFromUser(Long userId, Long familyId);
+
+
 }

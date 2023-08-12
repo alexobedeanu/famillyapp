@@ -30,7 +30,8 @@ def forecast_expenses():
     conn = connect_to_db()
 
     # Load the historical data
-    df = pd.read_sql_query("SELECT date, amount FROM expenses WHERE family_id = %s", conn, params=[family_id])
+    query = "SELECT date, amount FROM expenses WHERE family_id = %s ORDER BY date ASC"
+    df = pd.read_sql_query(query, conn, params=[family_id])
 
     # Process and forecast
     forecasted_expense = process_and_forecast(df, target_date)
@@ -41,31 +42,41 @@ def forecast_expenses():
     return jsonify(forecasted_expense_json)
 
 def process_and_forecast(df, target_date):
-    # Convert the dates to pandas datetime format
+    # Convert the dates to pandas datetime format and set as the index
     df['date'] = pd.to_datetime(df['date'])
-
-    # Set the date as the index
     df.set_index('date', inplace=True)
 
-    # Resample the data to get daily totals
-    daily_expenses = df.groupby(pd.Grouper(freq='D')).sum()
-    daily_expenses = daily_expenses['amount'].fillna(0)
+    # Compute the number of periods between the last date in history and the target date
+    num_periods = (target_date - df.index[-1]).days
+
+    # Specify the frequency of the data (e.g., 'D' for daily, 'M' for monthly)
+    freq = 'D'
+
+    # Resample the data to the specified frequency
+    resampled_df = df.resample(freq).mean()
+
+    # Fill any missing values in the resampled data
+    resampled_df = resampled_df.fillna(method='ffill')
 
     # Fit the ARIMA model
-    model = ARIMA(daily_expenses, order=(5, 1, 0))
+    model = ARIMA(resampled_df['amount'], order=(5, 1, 0))
     model_fit = model.fit()
-
+    print(model_fit.summary())
     # Make the forecast
-    forecast = model_fit.predict(start=daily_expenses.index[-1] + pd.Timedelta(days=1), end=target_date, typ='levels')
+    forecast = model_fit.get_forecast(steps=num_periods)
 
-    # Convert the forecast Series to DataFrame and reset the index
-    forecast_df = forecast.to_frame().reset_index()
+    # Extract the forecasted values and confidence intervals
+    forecast_values = forecast.predicted_mean
+    forecast_ci = forecast.conf_int()
 
-    # Rename the columns
-    forecast_df.columns = ['date', 'predicted_expense']
+    # Create a date range for the forecasted values
+    forecast_dates = pd.date_range(start=resampled_df.index[-1] + pd.DateOffset(days=1), periods=num_periods, freq=freq)
 
-    # Return the entire forecast
-    print(forecast_df)
+    # Create a DataFrame for the forecasted values and confidence intervals
+    forecast_df = pd.DataFrame({'date': forecast_dates, 'predicted_expense': forecast_values})
+    forecast_df['lower_ci'] = forecast_ci.iloc[:, 0]
+    forecast_df['upper_ci'] = forecast_ci.iloc[:, 1]
+    # print (forecast_df)
     return forecast_df
 
 if __name__ == "__main__":

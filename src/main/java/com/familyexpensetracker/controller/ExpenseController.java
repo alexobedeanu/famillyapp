@@ -62,4 +62,10 @@ public class ExpenseController {
         String targetDate = request.get("targetDate");
         return forecastService.forecastExpenses(familyId, targetDate);
     }
+
+    @GetMapping("/family/{familyId}")
+    public ResponseEntity<List<ExpenseDTO>> getExpensesByFamilyId(@PathVariable Long familyId) {
+        List<ExpenseDTO> expenseDTOs = expenseService.getExpensesByFamilyId(familyId);
+        return ResponseEntity.ok(expenseDTOs);
+    }
 }

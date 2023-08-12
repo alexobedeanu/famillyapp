@@ -17,5 +17,8 @@ public interface ExpenseService {
 
     Long getTotalExpenses();
 
+    List<ExpenseDTO> getExpensesByFamilyId(Long familyId);
+
+
 }
 

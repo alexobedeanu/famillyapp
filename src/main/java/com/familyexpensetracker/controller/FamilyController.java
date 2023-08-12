@@ -52,4 +52,11 @@ public class FamilyController {
         return ResponseEntity.ok(predictedExpenses);
     }
 
+    @GetMapping("/{id}/users")
+    public ResponseEntity<List<UserDTO>> getUsersByFamily(@PathVariable Long id) {
+        return ResponseEntity.ok(familyService.getUsersByFamily(id));
+    }
+
+
+
 }

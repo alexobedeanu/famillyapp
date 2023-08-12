@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f7;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.FamilyUsersPage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    width: 80%;
+    max-width: 900px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.FamilyUsersPage:hover {
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.FamilyUsersPage-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.FamilyUsersPage-title {
+    font-size: 24px;
+    color: #333;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.FamilyUsersPage .MuiSelect-root {
+    margin-left: 20px;
+    border-radius: 8px;
+    background-color: #e9e9eb;
+    padding: 5px 10px;
+}
+
+.FamilyUsersPage-list {
+    width: 100%;
+    background-color: #f7f7fa;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 15px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.FamilyUsersPage-listItem {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+}
+
+.FamilyUsersPage-listItem:hover {
+    background-color: #e9e9eb;
+}
+
+.FamilyUsersPage-userIcon {
+    background-color: #667eea;
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.FamilyUsersPage-addUserSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+

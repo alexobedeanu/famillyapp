@@ -50,4 +50,11 @@ public class UserController {
         UserDTO updatedUser = userService.addFamilyToUser(userId, familyId);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{userId}/families/{familyId}", method = RequestMethod.DELETE)
+    public ResponseEntity<UserDTO> removeFamilyFromUser(@PathVariable Long userId, @PathVariable Long familyId) {
+        UserDTO userDTO = userService.removeFamilyFromUser(userId, familyId);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
+
 }
