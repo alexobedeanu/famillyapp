@@ -92,4 +92,14 @@ body {
     margin-top: 20px;
 }
 
+.FamilyUsersPage-deleteButtonWrapper {
+    margin-left: auto; /* Acest lucru împinge conținutul la capătul drept al containerului său flex */
+    padding-left: 20px; /* Adăugați mai mult spațiu la stânga butonului dacă doriți */
+}
+
+.FamilyUsersPage-listItem-content {
+    display: flex;
+    align-items: center;
+}
+
 

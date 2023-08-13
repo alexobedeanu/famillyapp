@@ -1,6 +1,8 @@
 package com.familyexpensetracker.service;
 
+import com.familyexpensetracker.dto.FamilyUsersDTO;
 import com.familyexpensetracker.dto.UserDTO;
+import com.familyexpensetracker.dto.UserFamilyDTO;
 import com.familyexpensetracker.exception.FamilyNotFoundException;
 import com.familyexpensetracker.exception.UserNotFoundException;
 import com.familyexpensetracker.model.Family;
@@ -150,6 +152,47 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
+    public UserFamilyDTO getUserWithFamily(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if(!userOptional.isPresent()) {
+            throw new UserNotFoundException("User not found with id: " + userId);
+        }
+
+        User user = userOptional.get();
+        Set<Family> families = user.getFamilies();
+        // Pentru simplitate, presupunem că fiecare user face parte dintr-o singură familie
+        Family family = families.iterator().next();
+
+        // vreau sa apara si userID si familyID in raspuns
+
+
+        UserFamilyDTO userFamilyDTO = new UserFamilyDTO();
+        userFamilyDTO.setUsername(user.getUsername());
+        userFamilyDTO.setFamilyName(family.getName()); // presupunând că obiectul `Family` are un câmp numit `name`
+        userFamilyDTO.setUserId(user.getId());
+        userFamilyDTO.setFamilyId(family.getId());
+
+        return userFamilyDTO;
+    }
+
+    public FamilyUsersDTO getFamilyWithUsers(Long familyId) {
+        Optional<Family> familyOptional = familyRepository.findById(familyId);
+
+        if(!familyOptional.isPresent()) {
+            throw new FamilyNotFoundException("Family not found with id: " + familyId);
+        }
+
+        Family family = familyOptional.get();
+        Set<User> users = family.getUsers();
+
+        FamilyUsersDTO familyUsersDTO = new FamilyUsersDTO();
+        familyUsersDTO.setFamilyName(family.getName());
+        familyUsersDTO.setFamilyId(family.getId());
+        familyUsersDTO.setUsernames(users.stream().map(User::getUsername).collect(Collectors.toSet()));
+
+        return familyUsersDTO;
+    }
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

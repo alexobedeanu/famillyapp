@@ -135,11 +135,13 @@ const FamilyUsersPage = () => {
             <List className="FamilyUsersPage-list">
                 {familyUsers.map(user => (
                     <ListItem key={user.id} className="FamilyUsersPage-listItem">
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div className="FamilyUsersPage-listItem-content">
                             <Avatar className="FamilyUsersPage-userIcon">
                                 {user.username.substring(0, 2).toUpperCase()}
                             </Avatar>
                             <Typography>{user.username}</Typography>
+                        </div>
+                        <div className="FamilyUsersPage-deleteButtonWrapper">
                             <Button variant="contained" color="secondary" onClick={() => handleRemoveUserFromFamily(user.id, selectedFamily)}>
                                 Șterge
                             </Button>

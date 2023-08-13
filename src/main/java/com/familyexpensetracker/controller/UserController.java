@@ -1,6 +1,8 @@
 package com.familyexpensetracker.controller;
 
+import com.familyexpensetracker.dto.FamilyUsersDTO;
 import com.familyexpensetracker.dto.UserDTO;
+import com.familyexpensetracker.dto.UserFamilyDTO;
 import com.familyexpensetracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,4 +59,14 @@ public class UserController {
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/{userId}/details")
+    public ResponseEntity<UserFamilyDTO> getUserWithFamilyDetails(@PathVariable Long userId) {
+        UserFamilyDTO userFamilyDTO = userService.getUserWithFamily(userId);
+        return new ResponseEntity<>(userFamilyDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/{familyID}/users")
+    public ResponseEntity<FamilyUsersDTO> getFamilyWithUsers(@PathVariable Long familyID) {
+        return ResponseEntity.ok(userService.getFamilyWithUsers(familyID));
+    }
 }
