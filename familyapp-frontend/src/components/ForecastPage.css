@@ -1,39 +1,54 @@
+/* Stiluri de bază pentru pagina de prognoză */
 .ForecastPage {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 800px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 2rem auto;
+    background-color: #F7F9FC;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
+/* Stiluri pentru butoane */
 .ForecastPage .MuiButton-root {
-    margin-top: 20px;
-    background-color: #3f51b5;
-    color: white;
+    margin-top: 1.5rem;
+    background-color: #1A76D2;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .ForecastPage .MuiButton-root:hover {
-    background-color: #303f9f;
+    background-color: #155a8a;
+    transform: scale(1.05);
 }
 
-.ForecastPage .MuiTypography-h6 {
-    margin-top: 20px;
-    color: #3f51b5;
-}
-
-.ForecastPage .MuiTextField-root {
-    margin-top: 20px;
-}
-
+/* Stiluri pentru câmpurile de text și selectoare */
+.ForecastPage .MuiTextField-root,
 .ForecastPage .MuiSelect-root {
-    margin-top: 20px;
+    margin-top: 1.5rem;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+/* Stiluri pentru celulele tabelului */
+.ForecastPage .MuiTableCell-root {
+    font-size: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid #E3E8EE;
+}
+
+/* Stiluri pentru grafice */
 .ForecastPage .recharts-responsive-container {
-    margin-top: 20px;
+    margin-top: 1.5rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }

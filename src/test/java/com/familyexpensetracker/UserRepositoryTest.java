@@ -17,24 +17,24 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-//    @Test
-//    public void createUserAndSaveToDatabase() {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String rawPassword = "password123";
-//        String encodedPassword = passwordEncoder.encode(rawPassword);
-//
-//        User newUser = new User();
-//        newUser.setUsername("testUser");
-//        newUser.setEmail("testuser@example.com");
-//        newUser.setPassword(encodedPassword);
-//        newUser.setRole("ROLE_USER");
-//
-//        userRepository.save(newUser);
-//
-//        Optional<User> foundUser = userRepository.findByUsername("testUser");
-//
-//        assertThat(foundUser).isPresent();
-//        assertThat(foundUser.get().getUsername()).isEqualTo("testUser");
-//        assertThat(passwordEncoder.matches(rawPassword, foundUser.get().getPassword())).isTrue();
-//    }
+    @Test
+    public void createUserAndSaveToDatabase() {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String rawPassword = "password123";
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
+        User newUser = new User();
+        newUser.setUsername("testUser1");
+        newUser.setEmail("testuser@example.com");
+        newUser.setPassword(encodedPassword);
+        newUser.setRole("ROLE_USER");
+
+        userRepository.save(newUser);
+
+        Optional<User> foundUser = userRepository.findByUsername("testUser");
+
+        assertThat(foundUser).isPresent();
+        assertThat(foundUser.get().getUsername()).isEqualTo("testUser");
+        assertThat(passwordEncoder.matches(rawPassword, foundUser.get().getPassword())).isTrue();
+    }
 }

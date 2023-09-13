@@ -25,7 +25,9 @@ const ExpensesTable = () => {
     const [openAddModal, setOpenAddModal] = useState(false);
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
     const [expenseToUpdate, setExpenseToUpdate] = useState(null);
-
+    const [users, setUsers] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [families, setFamilies] = useState([]);
     useEffect(() => {
         console.log('token: ', token);
 
@@ -46,8 +48,40 @@ const ExpensesTable = () => {
                 console.error(error);
             }
         };
+        // Obțineți utilizatorii
+        const fetchUsers = async () => {
+            const response = await axios.get('http://localhost:8080/api/users', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setUsers(response.data);
+        };
+
+        // Obțineți categoriile
+        const fetchCategories = async () => {
+            const response = await axios.get('http://localhost:8080/api/categories', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setCategories(response.data);
+        };
+
+        // Obțineți familiile
+        const fetchFamilies = async () => {
+            const response = await axios.get('http://localhost:8080/api/families', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setFamilies(response.data);
+        };
 
         fetchExpenses();
+        fetchUsers();
+        fetchCategories();
+        fetchFamilies();
     }, [token, pageSize]);
 
     const nextPage = () => {
@@ -203,7 +237,7 @@ const ExpensesTable = () => {
                 Resetează
             </Button>
             <Button onClick={handleOpenAddModal} variant="contained" color="primary">
-                Add Expense
+                Adaugă cheltuială
             </Button>
             {/*<form onSubmit={handleAddExpense}>*/}
             {/*    <TextField name="id" label="ID" value={addExpenseForm.id} onChange={handleAddExpenseChange} />*/}
@@ -218,30 +252,47 @@ const ExpensesTable = () => {
             {/*    </Button>*/}
             {/*</form>*/}
             <table>
+                <thead>
+                <tr>
+                    <th>Descriere</th>
+                    <th>Nume utilizator</th>
+                    <th>Categorie</th>
+                    <th>Nume familie</th>
+                    <th>Actualizează</th>
+                    <th>Șterge</th>
+                </tr>
+                </thead>
                 <tbody>
                 {expenses &&
                     expenses
                         .slice((currentPage - 1) * pageSize, currentPage * pageSize)
-                        .map((expense) => (
-                            <tr key={expense.id} className="expense-row" onClick={() => setFilteredExpense(expense)}>
-                                <td>Description:</td>
-                                <td>
-                                    <span>{expense.description}</span>
-                                </td>
-                                <td>
-                                    <Button variant="contained" color="primary" onClick={() => handleOpenUpdateModal(expense)}>
-                                        Update
-                                    </Button>
-                                </td>
-                                <td>
-                                    <Button variant="contained" color="secondary" onClick={() => deleteExpense(expense.id)}>
-                                        Delete
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
+                        .map((expense) => {
+                            const user = users.find(u => u.id === expense.userId);
+                            const category = categories.find(c => c.id === expense.category_id);
+                            const family = families.find(f => f.id === expense.familyId);
+                            return (
+                                <tr key={expense.id} className="expense-row" onClick={() => setFilteredExpense(expense)}>
+                                    <td>{expense.description}</td>
+                                    <td>{user ? user.username : 'N/A'}</td>
+                                    <td>{category ? category.name : 'N/A'}</td>
+                                    <td>{family ? family.name : 'N/A'}</td>
+                                    <td>
+                                        <Button variant="contained" color="primary" onClick={() => handleOpenUpdateModal(expense)}>
+                                            Actualizează
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant="contained" color="secondary" onClick={() => deleteExpense(expense.id)}>
+                                            Șterge
+                                        </Button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                 </tbody>
             </table>
+
+
             <div className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (
                     <button
@@ -310,10 +361,9 @@ const ExpensesTable = () => {
                 </div>
             )}
             <Dialog open={openAddModal} onClose={handleCloseAddModal}>
-                <DialogTitle>Add Expense</DialogTitle>
+                <DialogTitle>Adaugă cheltuială</DialogTitle>
                 <DialogContent>
                     <form onSubmit={handleAddExpense}>
-                        <TextField name="id" label="ID" value={addExpenseForm.id} onChange={handleAddExpenseChange} />
                         <TextField name="date" label="Date" value={addExpenseForm.date} onChange={handleAddExpenseChange} />
                         <TextField name="description" label="Description" value={addExpenseForm.description} onChange={handleAddExpenseChange} />
                         <TextField name="amount" label="Amount" value={addExpenseForm.amount} onChange={handleAddExpenseChange} />
@@ -324,10 +374,10 @@ const ExpensesTable = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseAddModal} color="primary">
-                        Cancel
+                        Anulează
                     </Button>
                     <Button onClick={handleAddExpense} color="primary">
-                        Add
+                        Adaugă
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -375,10 +425,10 @@ const ExpensesTable = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseUpdateModal} color="primary">
-                        Cancel
+                        Anulează
                     </Button>
                     <Button onClick={handleUpdateExpense} color="primary">
-                        Update
+                        Actualizează
                     </Button>
                 </DialogActions>
             </Dialog>

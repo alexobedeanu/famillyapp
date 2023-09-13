@@ -46,21 +46,26 @@ function NavBar() {
             <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                 {user && <div className="user-info">Logged in as: {user}</div>}
                 <ul className='nav-menu-items'>
-                    <li className='navbar-toggle'>
-                        <Link to='#' className='menu-bars'>
-                            <FaTimes onClick={showSidebar} />
-                        </Link>
-                    </li>
+                    {/*<li className='navbar-toggle'>*/}
+                    {/*    <Link to='#' className='menu-bars'>*/}
+                    {/*        <FaTimes onClick={showSidebar} />*/}
+                    {/*    </Link>*/}
+                    {/*</li>*/}
                     <li>
                         <Link to="/home" onClick={showSidebar}>
                             <button className="nav-button">Home</button>
                         </Link>
-                        <Link to="/register" onClick={showSidebar}>
-                            <button className="nav-button">Register</button>
-                        </Link>
-                        <Link to="/login" onClick={showSidebar}>
-                            <button className="nav-button">Login</button>
-                        </Link>
+                        {!user && (
+                            <>
+                                <Link to="/register" onClick={showSidebar}>
+                                    <button className="nav-button">Register</button>
+                                </Link>
+                                <Link to="/login" onClick={showSidebar}>
+                                    <button className="nav-button">Login</button>
+                                </Link>
+                            </>
+                        )}
+
                     </li>
 
                     {role === 'ADMIN' && <li>
@@ -76,7 +81,12 @@ function NavBar() {
                         <Link to="/admin/forecast" onClick={showSidebar}>
                             <button className="nav-button">Forecast</button>
                         </Link>
-                        {/* Poți adăuga și alte rute specifice pentru admini aici */}
+                        <Link to="/admin/dashboard" onClick={showSidebar}>
+                            <button className="nav-button">Dashboard</button>
+                        </Link>
+                        <Link to="/admin/incomes" onClick={showSidebar}>
+                            <button className="nav-button">Incomes</button>
+                        </Link>
                     </li>}
 
                     {role === 'USER' && <li>
@@ -88,6 +98,12 @@ function NavBar() {
                         </Link>
                         <Link to="/user/forecast" onClick={showSidebar}>
                             <button className="nav-button">Forecast</button>
+                        </Link>
+                        <Link to="/user/dashboard" onClick={showSidebar}>
+                            <button className="nav-button">Dashboard</button>
+                        </Link>
+                        <Link to="/user/incomes" onClick={showSidebar}>
+                            <button className="nav-button">Incomes</button>
                         </Link>
                     </li>}
 

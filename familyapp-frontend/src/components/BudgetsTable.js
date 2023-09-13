@@ -14,7 +14,7 @@ import { AuthContext } from '../context/authContext';
 import './BudgetsTable.css';
 
 const BudgetsTable = () => {
-    const pageSize = 2;
+    const pageSize = 5;
     const [budgets, setBudgets] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
@@ -30,6 +30,9 @@ const BudgetsTable = () => {
     });
     const [selectedBudget, setSelectedBudget] = useState(null);
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [families, setFamilies] = useState([]);
 
     useEffect(() => {
         const fetchBudgets = async () => {
@@ -49,8 +52,39 @@ const BudgetsTable = () => {
                 console.error(error);
             }
         };
+        const fetchUsers = async () => {
+            const response = await axios.get('http://localhost:8080/api/users', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setUsers(response.data);
+        };
+
+        // Obțineți categoriile
+        const fetchCategories = async () => {
+            const response = await axios.get('http://localhost:8080/api/categories', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setCategories(response.data);
+        };
+
+        // Obțineți familiile
+        const fetchFamilies = async () => {
+            const response = await axios.get('http://localhost:8080/api/families', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setFamilies(response.data);
+        };
 
         fetchBudgets();
+        fetchUsers();
+        fetchCategories();
+        fetchFamilies();
     }, [token, pageSize]);
 
     const nextPage = () => {
@@ -192,46 +226,55 @@ const BudgetsTable = () => {
                 Resetează
             </Button>
             <form onSubmit={handleAddBudget}>
-                <TextField name="id" label="ID" value={addBudgetForm.id} onChange={handleAddBudgetChange} />
-                <TextField name="amount" label="Amount" value={addBudgetForm.amount} onChange={handleAddBudgetChange} />
-                <TextField name="familyId" label="Family ID" value={addBudgetForm.familyId} onChange={handleAddBudgetChange} />
-                <TextField name="categoryId" label="Category ID" value={addBudgetForm.categoryId} onChange={handleAddBudgetChange} />
+                <TextField name="amount" label="Sumă" value={addBudgetForm.amount} onChange={handleAddBudgetChange} />
+                <TextField name="familyId" label="ID Familie" value={addBudgetForm.familyId} onChange={handleAddBudgetChange} />
+                <TextField name="categoryId" label="ID Categorie" value={addBudgetForm.categoryId} onChange={handleAddBudgetChange} />
                 <Button type="submit" variant="contained" color="primary">
-                    Add
+                    Adaugă
                 </Button>
             </form>
             <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Sumă</th>
+                        <th>Nume familie</th>
+                        <th>Nume categorie</th>
+                        <th>Actualizează</th>
+                        <th>Șterge</th>
+                    </tr>
+                </thead>
                 <tbody>
                 {budgets &&
                     budgets
                         .filter((budget) => budget.id.toString().includes(searchId))
                         .slice((currentPage - 1) * pageSize, currentPage * pageSize)
-                        .map((budget) => (
-                            <tr
-                                key={budget.id}
-                                className={`budget-row ${selectedBudget && selectedBudget.id === budget.id ? 'selected' : ''}`}
-                                onClick={() => handleBudgetClick(budget)}
-                            >
-                                <td>ID:</td>
-                                <td>
-                                    <span>{budget.id}</span>
-                                </td>
-                                <td>Amount:</td>
-                                <td>
-                                    <span>{budget.amount}</span>
-                                </td>
-                                <td>
-                                    <Button variant="contained" color="primary" onClick={handleOpenUpdateModal}>
-                                        Update
-                                    </Button>
-                                </td>
-                                <td>
-                                    <Button variant="contained" color="secondary" onClick={() => deleteBudget(budget.id)}>
-                                        Delete
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
+                        .map((budget) => {
+                            const family = families.find(f => f.id === budget.familyId); // Presupunem că aveți acces la un array `families`
+                            const category = categories.find(c => c.id === budget.categoryId); // Presupunem că aveți acces la un array `categories`
+                            return (
+                                <tr
+                                    key={budget.id}
+                                    className={`budget-row ${selectedBudget && selectedBudget.id === budget.id ? 'selected' : ''}`}
+                                    onClick={() => handleBudgetClick(budget)}
+                                >
+                                    <td>{budget.id}</td>
+                                    <td>{budget.amount}</td>
+                                    <td>{family ? family.name : 'N/A'}</td>
+                                    <td>{category ? category.name : 'N/A'}</td>
+                                    <td>
+                                        <Button variant="contained" color="primary" onClick={handleOpenUpdateModal}>
+                                            Actualizează
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button variant="contained" color="secondary" onClick={() => deleteBudget(budget.id)}>
+                                            Șterge
+                                        </Button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                 </tbody>
             </table>
             <div className="pagination">
@@ -287,10 +330,10 @@ const BudgetsTable = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseUpdateModal} color="primary">
-                        Cancel
+                        Anulează
                     </Button>
                     <Button onClick={updateBudget} color="primary">
-                        Update
+                        Actualizează
                     </Button>
                 </DialogActions>
             </Dialog>

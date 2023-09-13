@@ -33,6 +33,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new IllegalArgumentException("E-mail already in use.");
+        }
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
+            throw new IllegalArgumentException("Username already in use.");
+        }
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -42,7 +48,6 @@ public class UserServiceImpl implements UserService {
         savedUserDTO.setEmail(savedUser.getEmail());
         savedUserDTO.setUsername(savedUser.getUsername());
         savedUserDTO.setRole(savedUser.getRole());
-//        BeanUtils.copyProperties(savedUser, savedUserDTO);
         return savedUserDTO;
     }
 

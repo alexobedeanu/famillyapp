@@ -28,9 +28,9 @@ const Login = () => {
         } catch (error) {
             console.error('Failed to login:', error);
             if (error.response && error.response.data && error.response.data.message === 'Bad credentials') {
-                toast.error('Bad credentials, please try again');
+                toast.error('Bad credentials, please try again', {position: "top-center", type: "error"});
             } else {
-                toast.error('An unexpected error occurred');
+                toast.error('An unexpected error occurred', {position: "top-center", type: "error"});
             }
         }
     };

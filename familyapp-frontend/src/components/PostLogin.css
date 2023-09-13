@@ -1,0 +1,18 @@
+/* Stiluri pentru containerul principal */
+.post-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Înălțimea completă a viewport-ului */
+    background-color: #f2f2f2; /* Culoare de fundal ușoară */
+    font-family: Arial, sans-serif;
+}
+
+/* Stiluri pentru titlu */
+.post-login h1 {
+    font-size: 3em;
+    color: #333;
+    text-shadow: 2px 2px 4px #999;
+}
+

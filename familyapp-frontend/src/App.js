@@ -14,6 +14,7 @@ import BudgetsTable from "./components/BudgetsTable";
 import ForecastPage from "./components/ForecastPage";
 import FamilyUsersPage from "./components/FamilyUsersPage";
 import Dashboard from "./components/Dashboard";
+import IncomesTable from "./components/IncomesTable";
 
 function AdminRoutes() {
     return (
@@ -23,6 +24,7 @@ function AdminRoutes() {
             <Route path="/budgets" element={<BudgetsTable />} />
             <Route path="/forecast" element={<ForecastPage />} />
             <Route path={"/dashboard"} element={<Dashboard/>} />
+            <Route path="/incomes" element={<IncomesTable />} />
 
             {/* ... alte rute specifice pentru admini */}
         </Routes>
@@ -36,6 +38,7 @@ function UserRoutes() {
             <Route path="/budgets" element={<BudgetsTable />} />
             <Route path="/forecast" element={<ForecastPage />} />
             <Route path={"/dashboard"} element={<Dashboard/>} />
+            <Route path="/incomes" element={<IncomesTable />} />
 
             {/* ... alte rute specifice pentru utilizatori */}
         </Routes>

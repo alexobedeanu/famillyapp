@@ -4,7 +4,7 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f7;
     height: 100vh;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .FamilyUsersPage {
@@ -54,7 +54,7 @@ body {
     width: 100%;
     background-color: #f7f7fa;
     border-radius: 10px;
-    overflow: hidden;
+    overflow: auto;
     margin-top: 15px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }

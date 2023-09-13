@@ -59,7 +59,7 @@ def process_and_forecast(df, target_date):
     resampled_df = resampled_df.fillna(method='ffill')
 
     # Fit the ARIMA model
-    model = ARIMA(resampled_df['amount'], order=(5, 1, 0))
+    model = ARIMA(resampled_df['amount'], order=(10, 1, 0))
     model_fit = model.fit()
     print(model_fit.summary())
     # Make the forecast

@@ -1,0 +1,85 @@
+/* Variabile CSS pentru culori și spațiere */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #28a745;
+    --text-color: #333;
+    --border-color: #ddd;
+    --bg-color: #f9f9f9;
+}
+
+/* Container */
+.incomes-table {
+    padding: 20px;
+    background-color: var(--bg-color);
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Titlu */
+.incomes-table h5 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+/* Formular pentru adăugarea veniturilor */
+.add-income-form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Antet tabel */
+thead {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Rânduri tabel */
+tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+tr.selected {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Coloane tabel */
+td {
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Paginare */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Butoane */
+button {
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Dialog */
+.Dialog {
+    /* stilizați după preferințe */
+}

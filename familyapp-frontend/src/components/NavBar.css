@@ -57,15 +57,16 @@
     align-items: flex-start;
 }
 
-.navbar-toggle {
-    position: absolute;
-    top: 12.5%;
-    right: 1.5rem;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    background: none;
-    color: #fff;
-}
+/*.navbar-toggle {*/
+/*    position: absolute;*/
+/*    top: 11.5%;*/
+/*    right: 1.5rem;*/
+/*    transform: translateY(-100%);*/
+/*    !*transform: translateX(-80%);*!*/
+/*    font-size: 0rem;*/
+/*    background: none;*/
+/*    color: #fff;*/
+/*}*/
 
 .nav-button {
     background-color: transparent;

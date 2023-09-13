@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';  // Puteți folosi această bibliotecă pentru a decodifica tokenul JWT
 import { AuthContext } from '../context/authContext';
-
+import './Dashboard.css';
 const Dashboard = () => {
     const { authState } = useContext(AuthContext);
     const { token } = authState;
@@ -26,7 +26,7 @@ const Dashboard = () => {
                 // Decodarea tokenului JWT pentru a obține username-ul
                 const decodedToken = jwt_decode(token);
                 const currentUsername = decodedToken.sub;
-
+                console.log (token);
                 const response = await axios.get(`http://localhost:8080/api/users`, { headers });
                 const currentUser = response.data.find(user => user.username === currentUsername);
                 setCurrentUserId(currentUser.id);
@@ -59,13 +59,14 @@ const Dashboard = () => {
     }, [token, currentUserId]);
 
     return (
-        <div>
+        <div className="dashboard">
             <h1>Dashboard</h1>
-            <p><strong>Income:</strong> ${dashboardData.totalIncome.toFixed(2)}</p>
-            <p><strong>Expenses:</strong> ${dashboardData.totalExpense.toFixed(2)}</p>
-            <p><strong>Family Budget:</strong> ${dashboardData.familyBudget.toFixed(2)}</p>
+            <p><strong>Venit:</strong> ${dashboardData.totalIncome.toFixed(2)}</p>
+            <p><strong>Cheltuieli:</strong> ${dashboardData.totalExpense.toFixed(2)}</p>
+            <p><strong>Bugetul familiei:</strong> ${dashboardData.familyBudget.toFixed(2)}</p>
         </div>
     );
+
 };
 
 export default Dashboard;
